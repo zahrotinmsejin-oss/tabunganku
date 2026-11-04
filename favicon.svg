@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="26" fill="url(#grad)" />
+  <!-- Piggy bank / wallet coin symbol -->
+  <circle cx="50" cy="50" r="32" fill="#ffffff" opacity="0.15" />
+  <path d="M50 24 C36 24 26 34 26 48 C26 56 30 63 36 67 L36 74 C36 76 38 78 40 78 L44 78 C46 78 48 76 48 74 L48 72 L52 72 L52 74 C52 76 54 78 56 78 L60 78 C62 78 64 76 64 74 L64 67 C70 63 74 56 74 48 C74 34 64 24 50 24 Z" fill="#ffffff" />
+  <circle cx="50" cy="46" r="10" fill="#10b981" />
+  <text x="50" y="50" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Rp</text>
+  <circle cx="62" cy="38" r="2.5" fill="#10b981" />
+</svg>
