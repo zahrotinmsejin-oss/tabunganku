@@ -36,93 +36,16 @@ const CATEGORIES = {
   ]
 };
 
-// Data Awal Contoh (Demo Data) agar tampilan langsung hidup saat pertama dibuka
-const INITIAL_GOALS = [
-  {
-    id: 'goal-1',
-    name: 'Dana Darurat 6 Bulan',
-    targetAmount: 15000000,
-    currentAmount: 6500000,
-    deadline: '2026-12-31',
-    color: '#8b5cf6',
-    icon: '🛡️'
-  },
-  {
-    id: 'goal-2',
-    name: 'Beli HP Baru / Gadget',
-    targetAmount: 5000000,
-    currentAmount: 3200000,
-    deadline: '2026-11-30',
-    color: '#06b6d4',
-    icon: '📱'
-  }
-];
-
-const INITIAL_TRANSACTIONS = [
-  {
-    id: 'tx-1',
-    type: 'pemasukan',
-    amount: 7500000,
-    category: 'Gaji Bulanan',
-    date: getFormattedDateOffset(-4),
-    note: 'Gaji pokok bulan ini'
-  },
-  {
-    id: 'tx-2',
-    type: 'tabungan',
-    amount: 1500000,
-    category: 'Dana Darurat',
-    goalId: 'goal-1',
-    date: getFormattedDateOffset(-3),
-    note: 'Alokasi rutin ke Dana Darurat'
-  },
-  {
-    id: 'tx-3',
-    type: 'pengeluaran',
-    amount: 350000,
-    category: 'Belanja Kebutuhan Pokok',
-    date: getFormattedDateOffset(-2),
-    note: 'Belanja mingguan supermarket'
-  },
-  {
-    id: 'tx-4',
-    type: 'pengeluaran',
-    amount: 45000,
-    category: 'Makanan & Minuman',
-    date: getFormattedDateOffset(-1),
-    note: 'Makan siang nasi padang'
-  },
-  {
-    id: 'tx-5',
-    type: 'pengeluaran',
-    amount: 150000,
-    category: 'Pulsa & Paket Internet',
-    date: getFormattedDateOffset(0),
-    note: 'Beli kuota internet bulanan'
-  },
-  {
-    id: 'tx-6',
-    type: 'tabungan',
-    amount: 500000,
-    category: 'Target Pembelian Impian',
-    goalId: 'goal-2',
-    date: getFormattedDateOffset(0),
-    note: 'Tabungan HP Impian'
-  }
-];
-
-function getFormattedDateOffset(offsetDays) {
-  const d = new Date();
-  d.setDate(d.getDate() + offsetDays);
-  return d.toISOString().split('T')[0];
-}
+// Data Awal: Dimulai dari bersih (Rp 0) tanpa data contoh
+const INITIAL_GOALS = [];
+const INITIAL_TRANSACTIONS = [];
 
 // ========================================================
 // 2. STATE APLIKASI & LOCALSTORAGE
 // ========================================================
 
-const STORAGE_KEY_TX = 'tabunganku_transactions_v2';
-const STORAGE_KEY_GOALS = 'tabunganku_goals_v2';
+const STORAGE_KEY_TX = 'tabunganku_transactions_v3';
+const STORAGE_KEY_GOALS = 'tabunganku_goals_v3';
 
 let transactions = [];
 let goals = [];
@@ -1359,14 +1282,14 @@ function setupEventListeners() {
   const btnReset = document.getElementById('btn-reset-data');
   if (btnReset) {
     btnReset.addEventListener('click', () => {
-      if (confirm('PERINGATAN: Apakah Anda yakin ingin mereset seluruh data catatan keuangan ke awal?')) {
-        transactions = [...INITIAL_TRANSACTIONS];
-        goals = [...INITIAL_GOALS];
+      if (confirm('PERINGATAN: Apakah Anda yakin ingin mereset seluruh data catatan keuangan ke Rp 0?')) {
+        transactions = [];
+        goals = [];
         saveTransactions();
         saveGoals();
         closeModal('modal-backup');
         renderAll();
-        showToast('Data berhasil di-reset ke data default!');
+        showToast('Semua data berhasil dibersihkan menjadi Rp 0!');
       }
     });
   }
