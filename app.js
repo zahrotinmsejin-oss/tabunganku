@@ -157,7 +157,7 @@ function showToast(message, type = 'success') {
 
   toast.textContent = message;
   toast.className = `fixed top-5 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl shadow-xl text-xs font-semibold text-white transition-all duration-300 pointer-events-none transform ${
-    type === 'success' ? 'bg-emerald-600 border border-emerald-400' : 'bg-rose-600 border border-rose-400'
+    type === 'success' ? 'bg-pink-600 border border-pink-400' : 'bg-rose-600 border border-rose-400'
   }`;
 
   toast.classList.remove('opacity-0', '-translate-y-2');
@@ -985,7 +985,7 @@ function switchTab(tabId) {
   // Update desktop tabs
   document.querySelectorAll('.nav-tab').forEach((tab) => {
     if (tab.getAttribute('data-tab') === tabId) {
-      tab.className = 'nav-tab active flex items-center gap-2 py-2.5 px-4 text-sm font-medium border-b-2 border-emerald-500 text-emerald-400 transition';
+      tab.className = 'nav-tab active flex items-center gap-2 py-2.5 px-4 text-sm font-medium border-b-2 border-pink-500 text-pink-400 transition';
     } else {
       tab.className = 'nav-tab flex items-center gap-2 py-2.5 px-4 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition';
     }
@@ -994,7 +994,7 @@ function switchTab(tabId) {
   // Update mobile tabs
   document.querySelectorAll('.mobile-nav-btn').forEach((btn) => {
     if (btn.getAttribute('data-tab') === tabId) {
-      btn.className = 'mobile-nav-btn active flex flex-col items-center justify-center py-1 text-emerald-400 transition';
+      btn.className = 'mobile-nav-btn active flex flex-col items-center justify-center py-1 text-pink-400 transition';
     } else {
       btn.className = 'mobile-nav-btn flex flex-col items-center justify-center py-1 text-slate-400 hover:text-slate-200 transition';
     }

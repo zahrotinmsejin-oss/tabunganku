@@ -1,11 +1,11 @@
 {
-  "name": "Tabunganku - Catatan Keuangan & Tabungan",
+  "name": "Tabunganku - Catatan Keuangan Zahro",
   "short_name": "Tabunganku",
-  "description": "Aplikasi pencatat keuangan, pengeluaran, pemasukan, dan target tabungan pribadi",
+  "description": "Aplikasi pencatat keuangan dan tabungan pribadi Zahro",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#10b981",
+  "theme_color": "#ec4899",
   "icons": [
     {
       "src": "icon-192.png",

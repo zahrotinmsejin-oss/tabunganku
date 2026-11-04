@@ -4,8 +4,8 @@
    ========================================================= */
 
 :root {
-  --primary: #10b981;
-  --primary-dark: #059669;
+  --primary: #ec4899;
+  --primary-dark: #db2777;
   --expense: #f43f5e;
   --income: #10b981;
   --savings: #8b5cf6;
@@ -74,11 +74,11 @@ body {
 
 /* Tab indicator & animations */
 .nav-tab.active {
-  color: #34d399;
+  color: #f472b6;
 }
 .nav-tab.active svg {
   transform: scale(1.1);
-  stroke: #34d399;
+  stroke: #f472b6;
 }
 
 /* Mobile bottom nav safe spacing */
