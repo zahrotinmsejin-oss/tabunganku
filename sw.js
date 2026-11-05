@@ -1,18 +1,15 @@
-const CACHE_NAME = 'tabunganku-v1';
+const CACHE_NAME = 'tabunganku-v5';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
   './app.js',
-  './manifest.json'
+  './manifest.json',
+  './favicon.svg',
+  './apple-touch-icon.png'
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS).catch((err) => console.log('Cache install ignored:', err));
-    })
-  );
   self.skipWaiting();
 });
 
@@ -27,16 +24,20 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// Network-First strategy: selalu ambil versi terbaru dari GitHub
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).catch(() => {
-        return caches.match('./index.html');
-      });
-    })
+    fetch(event.request)
+      .then((response) => {
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return response;
+      })
+      .catch(() => {
+        return caches.match(event.request).then((cached) => cached || caches.match('./index.html'));
+      })
   );
 });

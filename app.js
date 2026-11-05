@@ -1325,6 +1325,23 @@ function setupEventListeners() {
     inputImportJson.addEventListener('change', importFromJSON);
   }
 
+  // Force update / refresh cache
+  const btnForceRefresh = document.getElementById('btn-force-refresh');
+  if (btnForceRefresh) {
+    btnForceRefresh.addEventListener('click', () => {
+      showToast('Memperbarui aplikasi ke versi terbaru...');
+      if ('caches' in window) {
+        caches.keys().then((names) => {
+          return Promise.all(names.map((name) => caches.delete(name)));
+        }).then(() => {
+          setTimeout(() => window.location.reload(true), 500);
+        });
+      } else {
+        setTimeout(() => window.location.reload(true), 500);
+      }
+    });
+  }
+
   // Reset Data
   const btnReset = document.getElementById('btn-reset-data');
   if (btnReset) {
