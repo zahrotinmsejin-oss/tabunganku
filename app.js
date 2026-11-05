@@ -9,8 +9,8 @@
 
 const CATEGORIES = {
   pengeluaran: [
-    { id: 'makanan', name: 'Makanan & Minuman', icon: '🍲', color: '#f43f5e' },
     { id: 'arisan', name: 'Iuran / Setor Arisan', icon: '🤝', color: '#ec4899' },
+    { id: 'makanan', name: 'Makanan & Minuman', icon: '🍲', color: '#f43f5e' },
     { id: 'transport', name: 'Transportasi & Bensin', icon: '🛵', color: '#fb923c' },
     { id: 'belanja', name: 'Belanja Kebutuhan Pokok', icon: '🛒', color: '#f59e0b' },
     { id: 'tagihan', name: 'Tagihan, Listrik & Air', icon: '💡', color: '#eab308' },
@@ -21,21 +21,23 @@ const CATEGORIES = {
     { id: 'keluarga', name: 'Keluarga & Donasi', icon: '🤲', color: '#a855f7' },
     { id: 'lainnya', name: 'Pengeluaran Lainnya', icon: '📝', color: '#64748b' }
   ],
+  tabungan: [
+    { id: 'tabungan_mandiri', name: 'Tabungan Bank Mandiri', icon: '💳', color: '#0284c7' },
+    { id: 'tabungan_arisan', name: 'Iuran / Uang Arisan', icon: '🤝', color: '#ec4899' },
+    { id: 'tabungan_umum', name: 'Tabungan Bebas', icon: '🏦', color: '#8b5cf6' },
+    { id: 'dana_darurat', name: 'Dana Darurat', icon: '🛡️', color: '#a78bfa' },
+    { id: 'impian', name: 'Target Pembelian Impian', icon: '⭐', color: '#c084fc' },
+    { id: 'investasi_depan', name: 'Investasi Masa Depan', icon: '🚀', color: '#7c3aed' }
+  ],
   pemasukan: [
     { id: 'gaji', name: 'Gaji Bulanan', icon: '💼', color: '#10b981' },
     { id: 'dapat_arisan', name: 'Dapat / Tarik Arisan', icon: '🎉', color: '#34d399' },
+    { id: 'tarik_mandiri', name: 'Tarik / Transfer Bank Mandiri', icon: '💳', color: '#0284c7' },
     { id: 'usaha', name: 'Usaha & Jualan', icon: '🏪', color: '#059669' },
     { id: 'freelance', name: 'Freelance & Proyek', icon: '💻', color: '#14b8a6' },
     { id: 'bonus', name: 'Bonus, Hadiah & THR', icon: '🎁', color: '#34d399' },
     { id: 'investasi', name: 'Dividen & Bunga Investasi', icon: '📈', color: '#2dd4bf' },
     { id: 'lainnya_in', name: 'Pemasukan Lainnya', icon: '💵', color: '#6ee7b7' }
-  ],
-  tabungan: [
-    { id: 'tabungan_arisan', name: 'Titipan / Target Arisan', icon: '🤝', color: '#ec4899' },
-    { id: 'tabungan_umum', name: 'Tabungan Bebas', icon: '🏦', color: '#8b5cf6' },
-    { id: 'dana_darurat', name: 'Dana Darurat', icon: '🛡️', color: '#a78bfa' },
-    { id: 'impian', name: 'Target Pembelian Impian', icon: '⭐', color: '#c084fc' },
-    { id: 'investasi_depan', name: 'Investasi Masa Depan', icon: '🚀', color: '#7c3aed' }
   ]
 };
 
