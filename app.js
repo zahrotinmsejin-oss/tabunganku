@@ -41,11 +41,24 @@ const INITIAL_GOALS = [];
 const INITIAL_TRANSACTIONS = [];
 
 // ========================================================
-// 2. STATE APLIKASI & LOCALSTORAGE
+// 2. STATE APLIKASI & LOCALSTORAGE PERMANEN
 // ========================================================
 
-const STORAGE_KEY_TX = 'tabunganku_transactions_v3';
-const STORAGE_KEY_GOALS = 'tabunganku_goals_v3';
+// Kunci penyimpanan permanen untuk data Zahro (tidak akan berubah saat ada update fitur)
+const STORAGE_KEY_TX = 'tabunganku_zahro_transactions';
+const STORAGE_KEY_GOALS = 'tabunganku_zahro_goals';
+
+// Daftar kunci versi sebelumnya untuk memulihkan otomatis data yang pernah diinput
+const LEGACY_TX_KEYS = [
+  'tabunganku_transactions_v3',
+  'tabunganku_transactions_v2',
+  'tabunganku_transactions'
+];
+const LEGACY_GOAL_KEYS = [
+  'tabunganku_goals_v3',
+  'tabunganku_goals_v2',
+  'tabunganku_goals'
+];
 
 let transactions = [];
 let goals = [];
@@ -58,29 +71,60 @@ let expenseChartInstance = null;
 let trendChartInstance = null;
 
 function loadState() {
-  const savedTx = localStorage.getItem(STORAGE_KEY_TX);
-  const savedGoals = localStorage.getItem(STORAGE_KEY_GOALS);
+  let savedTx = localStorage.getItem(STORAGE_KEY_TX);
+  let savedGoals = localStorage.getItem(STORAGE_KEY_GOALS);
+
+  // Jika kunci permanen masih kosong, periksa dan pulihkan dari versi sebelumnya
+  if (!savedTx) {
+    for (const legacyKey of LEGACY_TX_KEYS) {
+      const legacyData = localStorage.getItem(legacyKey);
+      if (legacyData) {
+        try {
+          const parsed = JSON.parse(legacyData);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            savedTx = legacyData;
+            localStorage.setItem(STORAGE_KEY_TX, savedTx);
+            break;
+          }
+        } catch (e) {}
+      }
+    }
+  }
+
+  if (!savedGoals) {
+    for (const legacyKey of LEGACY_GOAL_KEYS) {
+      const legacyData = localStorage.getItem(legacyKey);
+      if (legacyData) {
+        try {
+          const parsed = JSON.parse(legacyData);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            savedGoals = legacyData;
+            localStorage.setItem(STORAGE_KEY_GOALS, savedGoals);
+            break;
+          }
+        } catch (e) {}
+      }
+    }
+  }
 
   if (savedTx) {
     try {
       transactions = JSON.parse(savedTx);
     } catch (e) {
-      transactions = [...INITIAL_TRANSACTIONS];
+      transactions = [];
     }
   } else {
-    transactions = [...INITIAL_TRANSACTIONS];
-    saveTransactions();
+    transactions = [];
   }
 
   if (savedGoals) {
     try {
       goals = JSON.parse(savedGoals);
     } catch (e) {
-      goals = [...INITIAL_GOALS];
+      goals = [];
     }
   } else {
-    goals = [...INITIAL_GOALS];
-    saveGoals();
+    goals = [];
   }
 }
 
