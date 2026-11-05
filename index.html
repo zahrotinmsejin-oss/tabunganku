@@ -56,7 +56,7 @@
       });
     }
   </script>
-  <link rel="stylesheet" href="styles.css?v=5.0">
+  <link rel="stylesheet" href="styles.css?v=6.0">
 </head>
 <body class="bg-[#0b1120] text-slate-100 antialiased selection:bg-pink-500 selection:text-white">
 
@@ -212,6 +212,44 @@
             <div id="stat-total-savings" class="text-lg sm:text-xl font-bold text-violet-400 mt-1 font-numeric">Rp 0</div>
             <p id="stat-savings-count" class="text-[11px] text-slate-500 mt-0.5">0 target aktif</p>
           </div>
+        </div>
+      </div>
+
+      <!-- Widget Khusus: Catatan & Total Arisan Zahro -->
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-pink-500/30 bg-gradient-to-br from-slate-900/90 via-slate-900 to-pink-950/25 shadow-xl relative overflow-hidden">
+        <div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-pink-500/10 blur-2xl pointer-events-none"></div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-400 text-white flex items-center justify-center text-2xl shadow-md shadow-pink-500/25 shrink-0">
+              🤝
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-sm sm:text-base font-bold text-white">Catatan & Total Arisan Zahro</h3>
+                <span id="badge-arisan-count" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 border border-pink-500/30">0x Setoran</span>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">Total uang yang sudah disetor untuk arisan</p>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800">
+            <div>
+              <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold sm:text-right">Total Uang Arisan</div>
+              <div id="stat-total-arisan" class="text-2xl sm:text-3xl font-extrabold text-pink-400 font-numeric">Rp 0</div>
+              <p id="stat-arisan-last-date" class="text-[10px] text-slate-500 sm:text-right mt-0.5">Belum ada setoran</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3.5 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+          <div class="flex items-center gap-1.5">
+            <span>Uang Cair / Didapat:</span>
+            <strong id="stat-arisan-received" class="text-emerald-400 font-numeric font-semibold">Rp 0</strong>
+          </div>
+          <button onclick="openAddTransactionModal('pengeluaran', 'Iuran / Setor Arisan')" class="px-3.5 py-1.5 rounded-xl bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 border border-pink-500/30 text-xs font-semibold transition active-press flex items-center gap-1.5 shadow-sm">
+            <span>+</span> Bayar Arisan
+          </button>
         </div>
       </div>
 
@@ -502,6 +540,14 @@
           </select>
         </div>
 
+        <!-- Info Pill Total Arisan Terkumpul di Modal -->
+        <div id="info-arisan-pill" class="hidden p-2.5 rounded-xl bg-pink-500/15 border border-pink-500/40 text-xs text-pink-200 flex items-center justify-between">
+          <span class="flex items-center gap-1.5 font-medium">
+            <span>🤝</span> Total Arisan Zahro Saat Ini:
+          </span>
+          <strong id="modal-arisan-current-total" class="font-numeric text-white font-bold text-sm">Rp 0</strong>
+        </div>
+
         <!-- Savings Target Link (Shown only if type is 'tabungan') -->
         <div id="wrapper-trans-goal" class="hidden">
           <label class="block text-xs font-semibold text-violet-300 mb-1.5">Masukkan ke Target Tabungan</label>
@@ -752,6 +798,6 @@
     Pesan notifikasi
   </div>
 
-  <script src="app.js?v=5.0"></script>
+  <script src="app.js?v=6.0"></script>
 </body>
 </html>

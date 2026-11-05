@@ -309,6 +309,48 @@ function updateSummaryMetrics() {
   const monthName = now.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
   const elLabelBulan = document.getElementById('label-periode-bulan');
   if (elLabelBulan) elLabelBulan.textContent = monthName;
+
+  // Perhitungan khusus Catatan & Total Arisan Zahro
+  let totalArisanPaid = 0;
+  let arisanCount = 0;
+  let totalArisanReceived = 0;
+  let lastArisanDate = null;
+
+  transactions.forEach((tx) => {
+    const cat = (tx.category || '').toLowerCase();
+    const note = (tx.note || '').toLowerCase();
+    const isArisanRelated = cat.includes('arisan') || note.includes('arisan');
+
+    if (isArisanRelated) {
+      const amt = Number(tx.amount) || 0;
+      if (tx.type === 'pengeluaran' || tx.type === 'tabungan') {
+        totalArisanPaid += amt;
+        arisanCount++;
+        if (!lastArisanDate || new Date(tx.date) > new Date(lastArisanDate)) {
+          lastArisanDate = tx.date;
+        }
+      } else if (tx.type === 'pemasukan') {
+        totalArisanReceived += amt;
+      }
+    }
+  });
+
+  const elTotalArisan = document.getElementById('stat-total-arisan');
+  const elArisanCount = document.getElementById('badge-arisan-count');
+  const elArisanLastDate = document.getElementById('stat-arisan-last-date');
+  const elArisanReceived = document.getElementById('stat-arisan-received');
+
+  if (elTotalArisan) elTotalArisan.textContent = formatRupiah(totalArisanPaid);
+  if (elArisanCount) elArisanCount.textContent = `${arisanCount}x Setoran`;
+  if (elArisanLastDate) {
+    elArisanLastDate.textContent = lastArisanDate ? `Terakhir: ${formatDateIndo(lastArisanDate)}` : 'Belum ada setoran';
+  }
+  if (elArisanReceived) elArisanReceived.textContent = formatRupiah(totalArisanReceived);
+
+  const elModalArisan = document.getElementById('modal-arisan-current-total');
+  if (elModalArisan) {
+    elModalArisan.textContent = `${formatRupiah(totalArisanPaid)} (${arisanCount}x setoran)`;
+  }
 }
 
 // Render mini savings goals on Dashboard
@@ -861,7 +903,7 @@ function updateAnalytics() {
 
 let activeTransType = 'pengeluaran';
 
-function openAddTransactionModal(defaultType = 'pengeluaran') {
+function openAddTransactionModal(defaultType = 'pengeluaran', defaultCategory = '') {
   activeTransType = defaultType;
   document.getElementById('modal-transaction-title').textContent = 'Catat Transaksi Baru';
   document.getElementById('trans-edit-id').value = '';
@@ -871,8 +913,9 @@ function openAddTransactionModal(defaultType = 'pengeluaran') {
   document.getElementById('trans-date').value = new Date().toISOString().split('T')[0];
 
   updateTransactionTypeButtons();
-  updateCategoryDropdown();
+  updateCategoryDropdown(defaultCategory);
   updateGoalsDropdown();
+  checkCategoryArisanInfo();
   openModal('modal-transaction');
 }
 
@@ -908,6 +951,21 @@ function updateCategoryDropdown(selectedCategory = '') {
       ${c.icon} ${c.name}
     </option>
   `).join('');
+
+  checkCategoryArisanInfo();
+}
+
+function checkCategoryArisanInfo() {
+  const select = document.getElementById('trans-category');
+  const pill = document.getElementById('info-arisan-pill');
+  if (!select || !pill) return;
+
+  const val = (select.value || '').toLowerCase();
+  if (val.includes('arisan')) {
+    pill.classList.remove('hidden');
+  } else {
+    pill.classList.add('hidden');
+  }
 }
 
 function updateGoalsDropdown(selectedGoalId = '') {
@@ -1090,6 +1148,12 @@ function setupEventListeners() {
       updateCategoryDropdown();
     });
   });
+
+  // Category change listener to toggle Arisan info pill
+  const selectCat = document.getElementById('trans-category');
+  if (selectCat) {
+    selectCat.addEventListener('change', checkCategoryArisanInfo);
+  }
 
   // Format rupiah inputs
   formatInputAsRupiah(document.getElementById('trans-amount'), document.getElementById('trans-amount-preview'));
