@@ -10,6 +10,7 @@
 const CATEGORIES = {
   pengeluaran: [
     { id: 'makanan', name: 'Makanan & Minuman', icon: '🍲', color: '#f43f5e' },
+    { id: 'arisan', name: 'Iuran / Setor Arisan', icon: '🤝', color: '#ec4899' },
     { id: 'transport', name: 'Transportasi & Bensin', icon: '🛵', color: '#fb923c' },
     { id: 'belanja', name: 'Belanja Kebutuhan Pokok', icon: '🛒', color: '#f59e0b' },
     { id: 'tagihan', name: 'Tagihan, Listrik & Air', icon: '💡', color: '#eab308' },
@@ -22,6 +23,7 @@ const CATEGORIES = {
   ],
   pemasukan: [
     { id: 'gaji', name: 'Gaji Bulanan', icon: '💼', color: '#10b981' },
+    { id: 'dapat_arisan', name: 'Dapat / Tarik Arisan', icon: '🎉', color: '#34d399' },
     { id: 'usaha', name: 'Usaha & Jualan', icon: '🏪', color: '#059669' },
     { id: 'freelance', name: 'Freelance & Proyek', icon: '💻', color: '#14b8a6' },
     { id: 'bonus', name: 'Bonus, Hadiah & THR', icon: '🎁', color: '#34d399' },
@@ -29,6 +31,7 @@ const CATEGORIES = {
     { id: 'lainnya_in', name: 'Pemasukan Lainnya', icon: '💵', color: '#6ee7b7' }
   ],
   tabungan: [
+    { id: 'tabungan_arisan', name: 'Titipan / Target Arisan', icon: '🤝', color: '#ec4899' },
     { id: 'tabungan_umum', name: 'Tabungan Bebas', icon: '🏦', color: '#8b5cf6' },
     { id: 'dana_darurat', name: 'Dana Darurat', icon: '🛡️', color: '#a78bfa' },
     { id: 'impian', name: 'Target Pembelian Impian', icon: '⭐', color: '#c084fc' },
