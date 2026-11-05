@@ -266,14 +266,18 @@ function updateSummaryMetrics() {
     }
   });
 
-  // Total uang tabungan dihitung dari seluruh goals terkumpul + tabungan bebas
+  // Total uang tabungan dihitung dari seluruh goals terkumpul + transaksi tabungan
   let totalSavedInGoals = goals.reduce((acc, g) => acc + (Number(g.currentAmount) || 0), 0);
   const totalSavingsCombined = Math.max(allTimeSavings, totalSavedInGoals);
 
   // Sisa kas yang siap dipakai (Cash Balance)
-  const availableCash = allTimeIncome - allTimeExpense - allTimeSavings;
-  // Total kekayaan bersih (Net Balance: Kas + Tabungan)
-  const netBalance = allTimeIncome - allTimeExpense;
+  let availableCash = 0;
+  if (allTimeIncome > 0) {
+    availableCash = Math.max(0, allTimeIncome - allTimeExpense - allTimeSavings);
+  }
+
+  // Total kekayaan bersih (Total Saldo Bersih = Kas Siap Pakai + Seluruh Tabungan Tersimpan)
+  const netBalance = availableCash + totalSavingsCombined;
 
   // Render ke DOM
   const elNet = document.getElementById('total-net-balance');
