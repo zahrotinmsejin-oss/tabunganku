@@ -56,7 +56,7 @@
       });
     }
   </script>
-  <link rel="stylesheet" href="styles.css?v=6.0">
+  <link rel="stylesheet" href="styles.css?v=7.0">
 </head>
 <body class="bg-[#0b1120] text-slate-100 antialiased selection:bg-pink-500 selection:text-white">
 
@@ -180,25 +180,31 @@
           <!-- Total Income -->
           <div class="p-3.5 rounded-xl bg-slate-800/70 border border-slate-700/60">
             <div class="flex items-center justify-between text-xs text-slate-400">
-              <span>Pemasukan</span>
+              <span>Pemasukan Bulan Ini</span>
               <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
               </div>
             </div>
             <div id="stat-total-income" class="text-lg sm:text-xl font-bold text-emerald-400 mt-1 font-numeric">Rp 0</div>
-            <p id="stat-income-count" class="text-[11px] text-slate-500 mt-0.5">0 transaksi</p>
+            <div class="flex items-center justify-between text-[11px] mt-1.5 pt-1.5 border-t border-slate-700/40">
+              <span id="stat-income-count" class="text-slate-500">0 transaksi</span>
+              <span id="stat-today-income" class="text-emerald-400 font-numeric font-medium">Hari ini: +Rp 0</span>
+            </div>
           </div>
 
           <!-- Total Expense -->
           <div class="p-3.5 rounded-xl bg-slate-800/70 border border-slate-700/60">
             <div class="flex items-center justify-between text-xs text-slate-400">
-              <span>Pengeluaran</span>
+              <span>Pengeluaran Bulan Ini</span>
               <div class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
               </div>
             </div>
             <div id="stat-total-expense" class="text-lg sm:text-xl font-bold text-rose-400 mt-1 font-numeric">Rp 0</div>
-            <p id="stat-expense-count" class="text-[11px] text-slate-500 mt-0.5">0 transaksi</p>
+            <div class="flex items-center justify-between text-[11px] mt-1.5 pt-1.5 border-t border-slate-700/40">
+              <span id="stat-expense-count" class="text-slate-500">0 transaksi</span>
+              <span id="stat-today-expense" class="text-rose-400 font-numeric font-medium">Hari ini: -Rp 0</span>
+            </div>
           </div>
 
           <!-- Total Savings -->
@@ -798,6 +804,6 @@
     Pesan notifikasi
   </div>
 
-  <script src="app.js?v=6.0"></script>
+  <script src="app.js?v=7.0"></script>
 </body>
 </html>

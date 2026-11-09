@@ -180,6 +180,13 @@ function formatTerbilangRingkas(num) {
   return num.toLocaleString('id-ID') + ' Rupiah';
 }
 
+function getLocalDateString(d = new Date()) {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 function formatDateIndo(dateStr) {
   if (!dateStr) return '-';
   const parts = dateStr.split('-');
@@ -193,11 +200,13 @@ function formatDateIndo(dateStr) {
   const isToday = dateObj.toDateString() === today.toDateString();
   const isYesterday = dateObj.toDateString() === yesterday.toDateString();
 
-  if (isToday) return 'Hari Ini';
-  if (isYesterday) return 'Kemarin';
+  const dayName = dateObj.toLocaleDateString('id-ID', { weekday: 'short' });
+  const dateFormatted = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
 
-  const options = { day: 'numeric', month: 'short', year: 'numeric' };
-  return dateObj.toLocaleDateString('id-ID', options);
+  if (isToday) return `Hari Ini, ${dayName} (${dateFormatted})`;
+  if (isYesterday) return `Kemarin, ${dayName} (${dateFormatted})`;
+
+  return dateObj.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 function showToast(message, type = 'success') {
@@ -234,10 +243,13 @@ function renderAll() {
 }
 
 function updateSummaryMetrics() {
-  const currentMonthPrefix = new Date().toISOString().slice(0, 7); // 'YYYY-MM'
+  const todayStr = getLocalDateString();
+  const currentMonthPrefix = todayStr.slice(0, 7); // 'YYYY-MM'
 
   let totalIncomeThisMonth = 0;
   let totalExpenseThisMonth = 0;
+  let todayIncome = 0;
+  let todayExpense = 0;
   let incomeCount = 0;
   let expenseCount = 0;
 
@@ -247,6 +259,7 @@ function updateSummaryMetrics() {
 
   transactions.forEach((tx) => {
     const isThisMonth = tx.date && tx.date.startsWith(currentMonthPrefix);
+    const isToday = tx.date === todayStr;
     const amount = Number(tx.amount) || 0;
 
     if (tx.type === 'pemasukan') {
@@ -255,11 +268,17 @@ function updateSummaryMetrics() {
         totalIncomeThisMonth += amount;
         incomeCount++;
       }
+      if (isToday) {
+        todayIncome += amount;
+      }
     } else if (tx.type === 'pengeluaran') {
       allTimeExpense += amount;
       if (isThisMonth) {
         totalExpenseThisMonth += amount;
         expenseCount++;
+      }
+      if (isToday) {
+        todayExpense += amount;
       }
     } else if (tx.type === 'tabungan') {
       allTimeSavings += amount;
@@ -286,6 +305,8 @@ function updateSummaryMetrics() {
   const elExpense = document.getElementById('stat-total-expense');
   const elSavings = document.getElementById('stat-total-savings');
   const elSavingsHero = document.getElementById('savings-hero-total');
+  const elTodayIncome = document.getElementById('stat-today-income');
+  const elTodayExpense = document.getElementById('stat-today-expense');
 
   if (elNet) elNet.textContent = formatRupiah(netBalance);
   if (elCash) elCash.textContent = formatRupiah(availableCash);
@@ -293,6 +314,8 @@ function updateSummaryMetrics() {
   if (elExpense) elExpense.textContent = formatRupiah(totalExpenseThisMonth);
   if (elSavings) elSavings.textContent = formatRupiah(totalSavingsCombined);
   if (elSavingsHero) elSavingsHero.textContent = formatRupiah(totalSavingsCombined);
+  if (elTodayIncome) elTodayIncome.textContent = `Hari ini: +${formatRupiah(todayIncome)}`;
+  if (elTodayExpense) elTodayExpense.textContent = `Hari ini: -${formatRupiah(todayExpense)}`;
 
   const elIncCount = document.getElementById('stat-income-count');
   const elExpCount = document.getElementById('stat-expense-count');
@@ -504,12 +527,40 @@ function renderFullTransactionsList() {
   });
 
   const html = Object.keys(groupedByDate).map((dateKey) => {
+    let dayIncome = 0;
+    let dayExpense = 0;
+    let daySavings = 0;
+
+    groupedByDate[dateKey].forEach((t) => {
+      const amt = Number(t.amount) || 0;
+      if (t.type === 'pemasukan') dayIncome += amt;
+      else if (t.type === 'pengeluaran') dayExpense += amt;
+      else if (t.type === 'tabungan') daySavings += amt;
+    });
+
+    const subtotalBadges = [];
+    if (dayIncome > 0) {
+      subtotalBadges.push(`<span class="text-emerald-400 font-numeric font-bold bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-lg text-[11px]">+${formatRupiah(dayIncome)}</span>`);
+    }
+    if (dayExpense > 0) {
+      subtotalBadges.push(`<span class="text-rose-400 font-numeric font-bold bg-rose-500/15 border border-rose-500/30 px-2 py-0.5 rounded-lg text-[11px]">-${formatRupiah(dayExpense)}</span>`);
+    }
+    if (daySavings > 0) {
+      subtotalBadges.push(`<span class="text-violet-400 font-numeric font-bold bg-violet-500/15 border border-violet-500/30 px-2 py-0.5 rounded-lg text-[11px]">📥 ${formatRupiah(daySavings)}</span>`);
+    }
+
     const listItems = groupedByDate[dateKey].map((tx) => renderTransactionItemHTML(tx, true)).join('');
     return `
-      <div class="glass-panel rounded-2xl p-3 sm:p-4 border border-slate-800">
-        <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80 text-xs font-semibold text-slate-400">
-          <span>${formatDateIndo(dateKey)}</span>
-          <span class="text-[11px] text-slate-500">${dateKey}</span>
+      <div class="glass-panel rounded-2xl p-3.5 sm:p-4 border border-slate-800">
+        <div class="flex flex-col xs:flex-row xs:items-center justify-between gap-1.5 pb-2.5 mb-2.5 border-b border-slate-800/80 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-200 text-xs sm:text-sm">${formatDateIndo(dateKey)}</span>
+            <span class="text-[11px] text-slate-500 font-mono">(${dateKey})</span>
+          </div>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Total Hari Ini:</span>
+            ${subtotalBadges.length > 0 ? subtotalBadges.join(' ') : '<span class="text-slate-500 text-[11px]">Rp 0</span>'}
+          </div>
         </div>
         <div class="divide-y divide-slate-800/60">
           ${listItems}
@@ -910,7 +961,7 @@ function openAddTransactionModal(defaultType = 'pengeluaran', defaultCategory = 
   document.getElementById('trans-amount').value = '';
   document.getElementById('trans-amount-preview').textContent = 'Nol rupiah';
   document.getElementById('trans-note').value = '';
-  document.getElementById('trans-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('trans-date').value = getLocalDateString();
 
   updateTransactionTypeButtons();
   updateCategoryDropdown(defaultCategory);
@@ -1300,7 +1351,7 @@ function setupEventListeners() {
         amount: amount,
         category: 'Target Pembelian Impian',
         goalId: goalId,
-        date: new Date().toISOString().split('T')[0],
+        date: getLocalDateString(),
         note: note ? `Setor [${targetGoal.name}]: ${note}` : `Setoran tabungan [${targetGoal.name}]`
       };
       transactions.unshift(newTx);
